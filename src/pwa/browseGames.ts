@@ -39,7 +39,7 @@ const SHORT_GAME_LEVELS = 6
 
 const browseGamesList = getElement('#browseGamesList')
 
-function createEl(tagName: string, classes: Optional<string[]>, attributes?: Optional<{[key: string]: string}>, children?: Array<Element | string | null>) {
+function createEl(tagName: string, classes: Optional<string[]>, attributes?: Optional<{[key: string]: string}>, children?: (Element | string | null)[]) {
     const el = document.createElement(tagName)
     classes && classes.forEach((cls) => el.classList.add(cls))
     if (attributes) {

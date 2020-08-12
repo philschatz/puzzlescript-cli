@@ -27,7 +27,9 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
+            minify: false,
             xhtml: true,
+            cache: true,
             template: 'pwa-template.xhtml',
             filename: 'index.xhtml',
             inject: 'head',
@@ -51,7 +53,7 @@ module.exports = {
             swDest: 'pwa-service-worker.js',
             runtimeCaching: [{
                 urlPattern: /\/games\//,
-                handler: 'staleWhileRevalidate',
+                handler: 'StaleWhileRevalidate',
                 options: {
                     cacheName: 'games-v1',
                     cacheableResponse: {
@@ -61,7 +63,7 @@ module.exports = {
             },
             {
                 urlPattern: /\/game-thumbnails\//,
-                handler: 'staleWhileRevalidate',
+                handler: 'StaleWhileRevalidate',
                 options: {
                     cacheName: 'game-thumbnails-v1',
                     cacheableResponse: {
@@ -71,7 +73,7 @@ module.exports = {
             },
             {
                 urlPattern: /\/style\.css/,
-                handler: 'staleWhileRevalidate',
+                handler: 'StaleWhileRevalidate',
                 options: {
                     cacheName: 'app-v1',
                     cacheableResponse: {
@@ -81,7 +83,7 @@ module.exports = {
             },
             {
                 urlPattern: /\/favicon\.ico/,
-                handler: 'staleWhileRevalidate',
+                handler: 'StaleWhileRevalidate',
                 options: {
                     cacheName: 'app-icons-v1',
                     cacheableResponse: {
@@ -91,7 +93,7 @@ module.exports = {
             },
             {
                 urlPattern: /\/apple-.*\.png/,
-                handler: 'staleWhileRevalidate',
+                handler: 'StaleWhileRevalidate',
                 options: {
                     cacheName: 'app-icons-v1',
                     cacheableResponse: {

@@ -292,19 +292,17 @@ type B1<TileDirections, TileRef> = Bracket<Neighbor<TileWithModifier<TileDirecti
 
 export interface IASTGame<TileDirections, TileRef, SoundRef, PixelRef> {
     title: string
-    metadata: Array<{type: string, value: string | boolean | IDimension | IColor}>
-    sprites: Array<Sprite<PixelRef>>
-    legendItems: Array<LegendItem<TileRef>>
-    collisionLayers: Array<CollisionLayer<TileRef>>
-    sounds: Array<SoundItem<TileRef>>
-    rules: Array<
-        Rule<
+    metadata: {type: string, value: string | boolean | IDimension | IColor}[]
+    sprites: Sprite<PixelRef>[]
+    legendItems: LegendItem<TileRef>[]
+    collisionLayers: CollisionLayer<TileRef>[]
+    sounds: SoundItem<TileRef>[]
+    rules: Rule<
             RuleGroup<SimpleRule<B1<TileDirections, TileRef>, Command<SoundRef>>>,
             SimpleRule<B1<TileDirections, TileRef>, Command<SoundRef>>,
             B1<TileDirections, TileRef>,
             Command<SoundRef>
-        >
-    >
-    winConditions: Array<WinCondition<TileRef>>
-    levels: Array<Level<TileRef>>
+        >[]
+    winConditions: WinCondition<TileRef>[]
+    levels: Level<TileRef>[]
 }

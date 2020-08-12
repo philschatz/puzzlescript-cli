@@ -16,7 +16,7 @@ export class SvgIconUi extends BaseUI implements GameEngineHandler {
     // onLevelChange(level: number, cells: Optional<Cellish[][]>, message: Optional<string>) { throw new Error('BUG: Not implemented') }
     public onWin(): Promise<any> { throw new Error('BUG: Not implemented') }
     public onSound(sound: Soundish): Promise<any> { throw new Error('BUG: Not implemented') }
-    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: Array<A11Y_MESSAGE<Cell, GameSprite>>) { throw new Error('BUG: Not implemented') }
+    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: A11Y_MESSAGE<Cell, GameSprite>[]) { throw new Error('BUG: Not implemented') }
     public onPause() { throw new Error('BUG: Not implemented') }
     public onResume() { throw new Error('BUG: Not implemented') }
 

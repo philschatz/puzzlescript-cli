@@ -1,4 +1,4 @@
-import 'babel-polyfill' // tslint:disable-line:no-implicit-dependencies
+import '@babel/polyfill' // tslint:disable-line:no-implicit-dependencies
 import SyncTableEngine from './browser/SyncTableEngine'
 import WebworkerTableEngine from './browser/WebworkerTableEngine'
 import { closeSounds } from './sounds'

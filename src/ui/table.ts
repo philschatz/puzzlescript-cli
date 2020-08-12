@@ -186,7 +186,7 @@ class TableUI extends BaseUI implements GameEngineHandler {
         playSound(sound.soundCode) // tslint:disable-line:no-floating-promises
         await this.handler.onSound(sound)
     }
-    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: Array<A11Y_MESSAGE<Cellish, GameSprite>>) {
+    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: A11Y_MESSAGE<Cellish, GameSprite>[]) {
         this.collectingTickCount++
         this.printMessageLog(a11yMessages, hasAgain)
         this.drawCells(changedCells, false)
@@ -279,7 +279,7 @@ class TableUI extends BaseUI implements GameEngineHandler {
         }
     }
 
-    private printMessageLog(a11yMessages: Array<A11Y_MESSAGE<Cellish, GameSprite>>, hasAgain: boolean) {
+    private printMessageLog(a11yMessages: A11Y_MESSAGE<Cellish, GameSprite>[], hasAgain: boolean) {
         if (this.silencedOutput && !this.didPressCauseTick) {
             return
         }

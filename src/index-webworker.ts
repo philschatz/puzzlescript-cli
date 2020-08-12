@@ -1,4 +1,4 @@
-import 'babel-polyfill' // tslint:disable-line:no-implicit-dependencies
+import '@babel/polyfill' // tslint:disable-line:no-implicit-dependencies
 import { Cell, CellSaveState, GameEngine } from './engine'
 import { GameData } from './models/game'
 import { A11Y_MESSAGE, A11Y_MESSAGE_TYPE } from './models/rule'
@@ -111,7 +111,7 @@ class Handler implements GameEngineHandler {
     public async onSound(sound: Soundish) {
         postMessage({ type: MESSAGE_TYPE.ON_SOUND, soundCode: sound.soundCode })
     }
-    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: Array<A11Y_MESSAGE<Cell, GameSprite>>) {
+    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: A11Y_MESSAGE<Cell, GameSprite>[]) {
         postMessage({ type: MESSAGE_TYPE.ON_TICK, changedCells: toCellsJson(changedCells), checkpoint, hasAgain, a11yMessages: a11yMessages.map(toA11yMessageJson) })
     }
     public onPause() {

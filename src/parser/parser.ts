@@ -2,7 +2,7 @@ import * as nearley from 'nearley'
 import { RULE_DIRECTION_WITH_RELATIVE } from '../util'
 import { AstBuilder } from './astBuilder'
 import * as ast from './astTypes'
-import * as compiledGrammar from './grammar'
+import compiledGrammar from './grammar'
 
 export enum ValidationLevel {
     ERROR,
@@ -20,7 +20,7 @@ class Parser {
         parser.feed(code)
         parser.feed('\n')
         parser.finish()
-        const results = parser.results as Array<ast.IASTGame<RULE_DIRECTION_WITH_RELATIVE, string, string, number | '.'>>
+        const results = parser.results as ast.IASTGame<RULE_DIRECTION_WITH_RELATIVE, string, string, number | '.'>[]
         if (results.length === 1) {
             return results[0]
         } else if (results.length === 0) {

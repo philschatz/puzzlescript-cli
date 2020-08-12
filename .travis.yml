@@ -1,7 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - "10.15"
+  - "12.18.3"
 
 cache: yarn
 

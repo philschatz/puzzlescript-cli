@@ -365,7 +365,7 @@ export type WorkerResponse = {
     changedCells: CellishJson[]
     checkpoint: Optional<CellSaveState>
     hasAgain: boolean
-    a11yMessages: Array<A11Y_MESSAGE<CellishJson, string>>
+    a11yMessages: A11Y_MESSAGE<CellishJson, string>[]
 }
 
 export interface PuzzlescriptWorker {
@@ -399,7 +399,7 @@ export interface GameEngineHandler {
     onLevelChange(level: number, cells: Optional<Cellish[][]>, message: Optional<string>): void
     onWin(): void
     onSound(sound: Soundish): Promise<void>
-    onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: Array<A11Y_MESSAGE<Cell, GameSprite>>): void
+    onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: A11Y_MESSAGE<Cell, GameSprite>[]): void
     onPause(): void
     onResume(): void
     // onGameChange(data: GameData): void
@@ -413,7 +413,7 @@ export interface GameEngineHandlerOptional {
     onLevelChange?(level: number, cells: Optional<Cellish[][]>, message: Optional<string>): void
     onWin?(): void
     onSound?(sound: Soundish): Promise<void>
-    onTick?(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: Array<A11Y_MESSAGE<Cellish, GameSprite>>): void
+    onTick?(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: A11Y_MESSAGE<Cellish, GameSprite>[]): void
     onPause?(): void
     onResume?(): void
     // onGameChange?(data: GameData): void
@@ -431,7 +431,7 @@ export class EmptyGameEngineHandler implements GameEngineHandler {
     public onLevelChange(level: number, cells: Optional<Cellish[][]>, message: Optional<string>) { for (const h of this.subHandlers) { h.onLevelChange && h.onLevelChange(level, cells, message) } }
     public onWin() { for (const h of this.subHandlers) { h.onWin && h.onWin() } }
     public async onSound(sound: Soundish) { for (const h of this.subHandlers) { h.onSound && h.onSound(sound) } }
-    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: Array<A11Y_MESSAGE<Cellish, GameSprite>>) {
+    public onTick(changedCells: Set<Cellish>, checkpoint: Optional<CellSaveState>, hasAgain: boolean, a11yMessages: A11Y_MESSAGE<Cellish, GameSprite>[]) {
         for (const h of this.subHandlers) { h.onTick && h.onTick(changedCells, checkpoint, hasAgain, a11yMessages) }
     }
     public onPause() { for (const h of this.subHandlers) { h.onPause && h.onPause() } }

@@ -21,7 +21,7 @@ interface ITickResult {
     wasAgainTick: boolean,
 }
 
-type Snapshot = Array<Array<Set<GameSprite>>>
+type Snapshot = Set<GameSprite>[][]
 
 class ArrayAndMap<K, V> {
     private readonly comparator: Comparator<K>
@@ -326,8 +326,8 @@ export class Cell implements Cellish {
 
 export class Level {
     private cells: Optional<Cell[][]>
-    private rowCache: Array<Optional<SpriteBitSet>>
-    private colCache: Array<Optional<SpriteBitSet>>
+    private rowCache: Optional<SpriteBitSet>[]
+    private colCache: Optional<SpriteBitSet>[]
     constructor() {
         this.rowCache = []
         this.colCache = []
@@ -458,7 +458,7 @@ export class LevelEngine extends EventEmitter2 {
         }
     }
 
-    public setMessageLevel(sprites: Array<Array<Set<GameSprite>>>) {
+    public setMessageLevel(sprites: Set<GameSprite>[][]) {
         this.tempOldLevel = this.currentLevel
         this._setLevel(sprites)
     }
@@ -594,7 +594,7 @@ export class LevelEngine extends EventEmitter2 {
 
     public /*only for unit tests*/ tickMoveSprites(changedCells: Set<Cell>) {
         const movedCells: Set<Cell> = new Set()
-        const a11yMessages: Array<A11Y_MESSAGE<Cell, GameSprite>> = []
+        const a11yMessages: A11Y_MESSAGE<Cell, GameSprite>[] = []
         // Loop over all the cells, see if a Rule matches, apply the transition, and notify that cells changed
         let somethingChanged
         do {
@@ -681,7 +681,7 @@ export class LevelEngine extends EventEmitter2 {
         }
     }
 
-    private _setLevel(levelSprites: Array<Array<Set<GameSprite>>>) {
+    private _setLevel(levelSprites: Set<GameSprite>[][]) {
         const level = new Level()
         this.currentLevel = level
         const spriteCells = levelSprites.map((row, rowIndex) => {
@@ -757,7 +757,7 @@ export class LevelEngine extends EventEmitter2 {
 
     private _tickUpdateCells(rules: Iterable<SimpleRuleGroup>) {
         const changedMutations: Set<IMutation> = new Set()
-        const a11yMessages: Array<A11Y_MESSAGE<Cell, GameSprite>> = []
+        const a11yMessages: A11Y_MESSAGE<Cell, GameSprite>[] = []
         const evaluatedRules: SimpleRuleGroup[] = []
         if (!this.currentLevel) {
             throw new Error(`BUG: Level Cells do not exist yet`)
@@ -859,7 +859,7 @@ export class LevelEngine extends EventEmitter2 {
         }
     }
 
-    private getRealA11yMessages(changedCells: Set<Cell>, a11yMessages: Array<A11Y_MESSAGE<Cell, GameSprite>>) {
+    private getRealA11yMessages(changedCells: Set<Cell>, a11yMessages: A11Y_MESSAGE<Cell, GameSprite>[]) {
         return a11yMessages.filter((m) => {
             switch (m.type) {
                 case A11Y_MESSAGE_TYPE.ADD:

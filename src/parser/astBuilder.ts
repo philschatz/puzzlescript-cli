@@ -34,7 +34,7 @@ const RULE_DIRECTION_LIST = [
 
 const RULE_DIRECTION_SET: Set<string> = new Set(RULE_DIRECTION_LIST)
 
-function removeNulls<T>(ary: Array<Optional<T>>) {
+function removeNulls<T>(ary: Optional<T>[]) {
     // return ary.filter(a => !!a)
 
     // TypeScript-friendly version
@@ -327,11 +327,10 @@ export class AstBuilder {
 
         const source = this.toSource(node)
         switch (node.type) {
-            case ast.RULE_TYPE.LOOP:
-                {
-                    const subRules = node.rules.map((n) => this.simplifyRule(n, ruleCache, bracketCache, neighborCache, tileCache))
-                    return new SimpleRuleLoop(source, false/*isRandom*/, subRules)
-                }
+            case ast.RULE_TYPE.LOOP: {
+                const subRules = node.rules.map((n) => this.simplifyRule(n, ruleCache, bracketCache, neighborCache, tileCache))
+                return new SimpleRuleLoop(source, false/*isRandom*/, subRules)
+            }
             case ast.RULE_TYPE.GROUP:
                 // Extra checks to make TypeScript happy
                 if (node.rules[0]) {
@@ -345,51 +344,50 @@ export class AstBuilder {
                     return new SimpleRuleGroup(source, isRandom, subRules)
                 }
                 throw new Error(`BUG!!!!!!`)
-            case ast.RULE_TYPE.SIMPLE:
-                {
-                    /**
-                     * Expands this Rule into multiple `SimpleRule` objects.
-                     *
-                     * For example, `HORIZONTAL [ > player ] -> [ < crate ]` gets expanded to the following `SimpleRule`s:
-                     *
-                     * -  `LEFT  [ LEFT  player ] -> [ RIGHT crate ]`
-                     * -  `RIGHT [ RIGHT player ] -> [ LEFT  crate ]`
-                     *
-                     * The `SimpleRule`s only have absolute directions
-                     * rather than the relative ones specified in the original game code.
-                     */
-                    const isRandom = !!node.isRandom
-                    const conditions = node.conditions
-                    const actions = node.actions
+            case ast.RULE_TYPE.SIMPLE: {
+                /**
+                 * Expands this Rule into multiple `SimpleRule` objects.
+                 *
+                 * For example, `HORIZONTAL [ > player ] -> [ < crate ]` gets expanded to the following `SimpleRule`s:
+                 *
+                 * -  `LEFT  [ LEFT  player ] -> [ RIGHT crate ]`
+                 * -  `RIGHT [ RIGHT player ] -> [ LEFT  crate ]`
+                 *
+                 * The `SimpleRule`s only have absolute directions
+                 * rather than the relative ones specified in the original game code.
+                 */
+                const isRandom = !!node.isRandom
+                const conditions = node.conditions
+                const actions = node.actions
 
-                    // Check if valid
-                    if (conditions.length !== actions.length && actions.length !== 0) {
-                        throw new Error(`Left side has "${conditions.length}" conditions and right side has "${actions.length}" actions!`)
-                    }
-
-                    if (conditions.length === actions.length) {
-                        // do nothing
-                    } else if (actions.length !== 0) {
-                        throw new Error(`Invalid Rule. The number of brackets on the right must match the structure of the left hand side or be 0`)
-                    }
-
-                    const simpleRules = this.rule_convertToMultiple(node).map((r) => this.rule_toSimple(r, ruleCache, bracketCache, neighborCache, tileCache))
-                    // If the brackets are all the same object then that means we can just output 1 rule
-                    // (the brackets don't have any directions. Otherwise they would not have been
-                    // deduplicated as part of the .toKey() and cacheGetAndSet)
-                    const isDuplicate = simpleRules.length === 1 || (!node.isRandom && simpleRules[1] && simpleRules[0].canCollapseBecauseBracketsMatch(simpleRules[1]))
-                    if (isDuplicate) {
-                        simpleRules[0].subscribeToCellChanges()
-                        // we still need it to be in a RuleGroup
-                        // so the Rule can be evaluated multiple times (not just once)
-                        return new SimpleRuleGroup(source, isRandom, [simpleRules[0]])
-                    } else {
-                        for (const rule of simpleRules) {
-                            rule.subscribeToCellChanges()
-                        }
-                        return new SimpleRuleGroup(source, isRandom, simpleRules)
-                    }
+                // Check if valid
+                if (conditions.length !== actions.length && actions.length !== 0) {
+                    throw new Error(`Left side has "${conditions.length}" conditions and right side has "${actions.length}" actions!`)
                 }
+
+                if (conditions.length === actions.length) {
+                    // do nothing
+                } else if (actions.length !== 0) {
+                    throw new Error(`Invalid Rule. The number of brackets on the right must match the structure of the left hand side or be 0`)
+                }
+
+                const simpleRules = this.rule_convertToMultiple(node).map((r) => this.rule_toSimple(r, ruleCache, bracketCache, neighborCache, tileCache))
+                // If the brackets are all the same object then that means we can just output 1 rule
+                // (the brackets don't have any directions. Otherwise they would not have been
+                // deduplicated as part of the .toKey() and cacheGetAndSet)
+                const isDuplicate = simpleRules.length === 1 || (!node.isRandom && simpleRules[1] && simpleRules[0].canCollapseBecauseBracketsMatch(simpleRules[1]))
+                if (isDuplicate) {
+                    simpleRules[0].subscribeToCellChanges()
+                    // we still need it to be in a RuleGroup
+                    // so the Rule can be evaluated multiple times (not just once)
+                    return new SimpleRuleGroup(source, isRandom, [simpleRules[0]])
+                } else {
+                    for (const rule of simpleRules) {
+                        rule.subscribeToCellChanges()
+                    }
+                    return new SimpleRuleGroup(source, isRandom, simpleRules)
+                }
+            }
             default:
                 throw new Error(`Unsupported type ${node}`)
         }

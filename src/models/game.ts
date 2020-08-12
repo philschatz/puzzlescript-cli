@@ -22,11 +22,11 @@ export class GameData {
     public readonly metadata: GameMetadata
     public readonly objects: GameSprite[]
     public readonly legends: IGameTile[]
-    public readonly sounds: Array<SoundItem<IGameTile>>
+    public readonly sounds: SoundItem<IGameTile>[]
     public readonly collisionLayers: CollisionLayer[]
     public readonly rules: SimpleRuleGroup[]
     public readonly winConditions: WinConditionSimple[]
-    public readonly levels: Array<Level<IGameTile>>
+    public readonly levels: Level<IGameTile>[]
     private readonly cacheSpriteSize: {spriteHeight: number, spriteWidth: number}
     private cachedBackgroundSprite: Optional<GameSprite>
     private readonly letterSprites: Map<string, GameSprite>
@@ -37,11 +37,11 @@ export class GameData {
         metadata: GameMetadata,
         objects: GameSprite[],
         legends: IGameTile[],
-        sounds: Array<SoundItem<IGameTile>>,
+        sounds: SoundItem<IGameTile>[],
         collisionLayers: CollisionLayer[],
         rules: SimpleRuleGroup[],
         winConditions: WinConditionSimple[],
-        levels: Array<Level<IGameTile>>
+        levels: Level<IGameTile>[]
     ) {
         this.title = title
         this.metadata = metadata

@@ -122,7 +122,7 @@ abstract class BaseUI {
     public PIXEL_WIDTH: number // number of characters in the terminal used to represent a pixel
     public PIXEL_HEIGHT: number
     protected gameData: Optional<GameData>
-    protected renderedPixels: Array<Array<{hex: string, chars: string}>> // string is the hex code of the pixel
+    protected renderedPixels: {hex: string, chars: string}[][] // string is the hex code of the pixel
     protected windowOffsetColStart: number
     protected windowOffsetRowStart: number
     protected windowOffsetWidth: Optional<number>
@@ -387,9 +387,9 @@ abstract class BaseUI {
         const titleImage = this.createMessageTextScreen(messageStr)
 
         // Now, convert the string array into cells
-        const cells: Array<Array<Set<GameSprite>>> = []
+        const cells: Set<GameSprite>[][] = []
         for (const row of titleImage) {
-            const cellsRow: Array<Set<GameSprite>> = []
+            const cellsRow: Set<GameSprite>[] = []
             cells.push(cellsRow)
             for (const char of row) {
                 const sprite = this.gameData.getLetterSprite(char)

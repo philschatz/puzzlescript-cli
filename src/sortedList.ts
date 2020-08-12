@@ -59,7 +59,7 @@ class ListItem<T> {
     }
 }
 
-class IteratorResultDone<T> implements IteratorResult<T> {
+class IteratorResultDone<T> implements IteratorReturnResult<T> {
     public done: true
     public value: T
     constructor() {
@@ -67,7 +67,7 @@ class IteratorResultDone<T> implements IteratorResult<T> {
         this.value = {} as T // tslint:disable-line:no-object-literal-type-assertion
     }
 }
-class ListIteratorResult<T> implements IteratorResult<T> {
+class ListIteratorResult<T> implements IteratorYieldResult<T> {
     public value: T
     public done: false
     constructor(value: T) {

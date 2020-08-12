@@ -24,6 +24,7 @@ export const checkLighthouse = async(urlPath: string) => {
         writeFileSync(join(coveragePath, 'lighthouse-report.html'), html, { encoding: 'utf-8' })
     }
 
+    expect(lhr.categories.seo.score).not.toBeNull() // The audit failed. Maybe XHTML parsing problem?
     expect(lhr.categories.accessibility.score).toBeGreaterThanOrEqual(1)
     expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(1)
     expect(lhr.categories.pwa.score).toBeGreaterThanOrEqual(0.73) // since it is not https

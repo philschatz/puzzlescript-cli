@@ -26,7 +26,7 @@ export default class InputWatcher {
     private readonly table: HTMLTableElement
     private readonly controls: Control<{button: IButton, lastPressed: Optional<number>}>
     private readonly stickControls: StickControl<{stick: IStick, lastPressed: Optional<number>}>
-    private readonly controlCheckers: Array<() => void>
+    private readonly controlCheckers: (() => void)[]
     private readonly boundKeys: IKeyboardButton[]
     private polledInput: Optional<INPUT_BUTTON>
     private repeatIntervalInSeconds: Optional<number>

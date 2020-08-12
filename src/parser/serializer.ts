@@ -89,7 +89,7 @@ interface ISourceNode {
 
 interface IGraphSprite extends ISourceNode {
     name: string,
-    pixels: Array<Array<Optional<ColorId>>>,
+    pixels: Optional<ColorId>[][],
     collisionLayer: CollisionId,
     // sounds: {}
 }
@@ -452,9 +452,9 @@ export default class Serializer {
     private readonly tileMap: MapWithId<IGameTile, GraphTile>
     private readonly ruleMap: MapWithId<IRule, ast.Rule<RuleId, RuleId, BracketId, CommandId>>
     private readonly commandMap: MapWithId<ast.Command<ast.SoundItem<IGameTile>>, ast.Command<SoundId>>
-    private readonly winConditions: Array<ast.WinCondition<TileId>>
+    private readonly winConditions: ast.WinCondition<TileId>[]
     private orderedRules: RuleId[]
-    private levels: Array<ast.Level<TileId>>
+    private levels: ast.Level<TileId>[]
 
     constructor(game: GameData) {
         this.game = game
@@ -747,11 +747,11 @@ export interface IGraphJson {
     commands: {[key: string]: ast.Command<SoundId>},
     sprites: {[key: string]: IGraphSprite},
     tiles: {[key: string]: GraphTile},
-    winConditions: Array<ast.WinCondition<TileId>>,
+    winConditions: ast.WinCondition<TileId>[],
     tilesWithModifiers: {[key: string]: ast.TileWithModifier<RULE_DIRECTION, TileId>},
     neighbors: {[key: string]: ast.Neighbor<TileWithModifierId>},
     brackets: {[key: string]: ast.Bracket<NeighborId>},
     ruleDefinitions: {[key: string]: ast.Rule<RuleId, RuleId, BracketId, CommandId>},
     rules: RuleId[],
-    levels: Array<ast.Level<TileId>>
+    levels: ast.Level<TileId>[]
 }

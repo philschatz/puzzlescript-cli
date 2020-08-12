@@ -37,7 +37,7 @@ enum CLI_SPRITE_SIZE {
     SMALL = 'small'
 }
 interface IGameInfo { id: string, title: string, filePath: string }
-interface ISaveFile { version: number, solutions: Array<{ solution?: string, partial?: string, snapshot?: {tickNum: number, cellState: string[][][]} }> }
+interface ISaveFile { version: number, solutions: { solution?: string, partial?: string, snapshot?: {tickNum: number, cellState: string[][][]} }[] }
 interface ICliOptions {
     version: string,
     ui: boolean,
@@ -66,23 +66,20 @@ async function sleep(ms: number) {
 
 function first2Lines(filePath: string) {
 
-    const opts = {
-        encoding: 'utf8',
-        lineEnding: '\n'
-    }
+    const lineEnding = '\n'
     return new Promise<string>((resolve, reject) => {
-        const rs = createReadStream(filePath, { encoding: opts.encoding })
+        const rs = createReadStream(filePath, { encoding: 'utf8' })
         let acc = ''
         let pos = 0
         let index
         rs
             .on('data', (chunk: string) => {
-                index = chunk.indexOf(opts.lineEnding)
+                index = chunk.indexOf(lineEnding)
                 acc += chunk
                 if (index === -1) {
                     pos += chunk.length
                 } else {
-                    index = chunk.indexOf(opts.lineEnding, index + 1)
+                    index = chunk.indexOf(lineEnding, index + 1)
                     if (index >= 0) {
                         pos += index
                         rs.close()

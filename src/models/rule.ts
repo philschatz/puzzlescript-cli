@@ -50,22 +50,22 @@ export interface IRule extends IGameNode {
 
     totalTimeMs?: number
     timesRan?: number
-    a11yGetConditionSprites(): Array<Set<GameSprite>>
+    a11yGetConditionSprites(): Set<GameSprite>[]
     toKey(): string
 
 }
 
 export interface IMutation {
-    messages: Array<A11Y_MESSAGE<Cell, GameSprite>>
+    messages: A11Y_MESSAGE<Cell, GameSprite>[]
     hasCell: () => boolean
     getCell: () => Cell
     getCommand: () => Command<SoundItem<IGameTile>>
 }
 
 class CellMutation implements IMutation {
-    public readonly messages: Array<A11Y_MESSAGE<Cell, GameSprite>>
+    public readonly messages: A11Y_MESSAGE<Cell, GameSprite>[]
     private cell: Cell
-    constructor(cell: Cell, messages: Array<A11Y_MESSAGE<Cell, GameSprite>>) {
+    constructor(cell: Cell, messages: A11Y_MESSAGE<Cell, GameSprite>[]) {
         this.cell = cell
         this.messages = messages
     }
@@ -77,7 +77,7 @@ class CellMutation implements IMutation {
 }
 
 class CommandMutation implements IMutation {
-    public readonly messages: Array<A11Y_MESSAGE<Cell, GameSprite>>
+    public readonly messages: A11Y_MESSAGE<Cell, GameSprite>[]
     private command: Command<SoundItem<IGameTile>>
     constructor(command: Command<SoundItem<IGameTile>>) {
         this.command = command
@@ -252,7 +252,7 @@ export class SimpleRuleGroup extends BaseForLines implements IRule {
     }
 
     public a11yGetConditionSprites() {
-        let sprites: Array<Set<GameSprite>> = []
+        let sprites: Set<GameSprite>[] = []
         for (const rule of this.rules) {
             sprites = [...sprites, ...rule.a11yGetConditionSprites()]
         }
@@ -276,7 +276,7 @@ export class SimpleRuleLoop extends SimpleRuleGroup {
 export class SimpleRule extends BaseForLines implements ICacheable, IRule {
     public conditionBrackets: ISimpleBracket[]
     public actionBrackets: ISimpleBracket[]
-    public commands: Array<Command<SoundItem<IGameTile>>>
+    public commands: Command<SoundItem<IGameTile>>[]
     public debugFlag: Optional<DEBUG_FLAG>
     // private evaluationDirection: RULE_DIRECTION
     private _isLate: boolean
@@ -285,7 +285,7 @@ export class SimpleRule extends BaseForLines implements ICacheable, IRule {
 
     constructor(source: IGameCode,
                 conditionBrackets: ISimpleBracket[], actionBrackets: ISimpleBracket[],
-                commands: Array<Command<SoundItem<IGameTile>>>, isLate: boolean, isRigid: boolean, debugFlag: Optional<DEBUG_FLAG>) {
+                commands: Command<SoundItem<IGameTile>>[], isLate: boolean, isRigid: boolean, debugFlag: Optional<DEBUG_FLAG>) {
 
         super(source)
         // this.evaluationDirection = evaluationDirection
@@ -469,7 +469,7 @@ export class SimpleRule extends BaseForLines implements ICacheable, IRule {
     }
 
     public a11yGetConditionSprites() {
-        let sprites: Array<Set<GameSprite>> = []
+        let sprites: Set<GameSprite>[] = []
         for (const b of this.conditionBrackets) {
             sprites = [...sprites, ...b.a11yGetSprites()]
         }
@@ -679,7 +679,7 @@ export abstract class ISimpleBracket extends BaseForLines implements ICacheable 
     public abstract removeCell(index: number, neighbor: SimpleNeighbor, t: SimpleTileWithModifier, sprite: GameSprite, cell: Cell): void
     public abstract addCellsToEmptyRules(cells: Iterable<Cell>): void
     public abstract getMatches(level: Level, actionBracket: Optional<ISimpleBracket>): MatchedCellsForRule[]
-    public abstract a11yGetSprites(): Array<Set<GameSprite>>
+    public abstract a11yGetSprites(): Set<GameSprite>[]
 
     public _getAllNeighbors() {
         return this.allNeighbors
@@ -1429,9 +1429,9 @@ class ReplaceTile {
         this.conditionSpritesToRemove = conditionSpritesToRemove
         this.newDirection = newDirection
     }
-    public replace(cell: Cell, magicOrTiles: Map<IGameTile, Set<GameSprite>>, orTilesRemoved: Set<IGameTile>): { didActuallyChange: boolean, messages: Array<A11Y_MESSAGE<Cell, GameSprite>>} {
+    public replace(cell: Cell, magicOrTiles: Map<IGameTile, Set<GameSprite>>, orTilesRemoved: Set<IGameTile>): { didActuallyChange: boolean, messages: A11Y_MESSAGE<Cell, GameSprite>[]} {
         let didActuallyChange = false
-        const messages: Array<A11Y_MESSAGE<Cell, GameSprite>> = []
+        const messages: A11Y_MESSAGE<Cell, GameSprite>[] = []
         // Check if we are adding or removing....
         if (this.actionTileWithModifier) {
             // adding
@@ -1453,7 +1453,7 @@ class ReplaceTile {
                 sprites = this.actionTileWithModifier._tile.getSprites()
             }
             const addedSprites: GameSprite[] = []
-            const replacedSprites: Array<{oldSprite: GameSprite, newSprite: GameSprite}> = []
+            const replacedSprites: {oldSprite: GameSprite, newSprite: GameSprite}[] = []
             for (const sprite of sprites) {
                 const c = sprite.getCollisionLayer()
                 const wantsToMove = this.newDirection || cell.getCollisionLayerWantsToMove(c)
@@ -1892,7 +1892,7 @@ export class SimpleNeighbor extends BaseForLines implements ICacheable {
         let didChangeSprites = false
         let didChangeDirection = false
         const orTilesRemoved = new Set<IGameTile>()
-        let allMessages: Array<A11Y_MESSAGE<Cell, GameSprite>> = []
+        let allMessages: A11Y_MESSAGE<Cell, GameSprite>[] = []
         for (const replaceTile of replaceTiles) {
             const { didActuallyChange, messages } = replaceTile.replace(cell, magicOrTiles, orTilesRemoved)
             if (didActuallyChange) {

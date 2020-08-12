@@ -156,7 +156,7 @@ describe('Browser', () => {
                     return -1
                 }
             })
-            return ret as number
+            return ret
         }
 
         // The game shows a dialog immediately (uggh)

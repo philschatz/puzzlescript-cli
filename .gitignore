@@ -10,7 +10,6 @@
 # ---
 
 /index.xhtml
-/precache-manifest.*.js
 /puzzlescript.js
 /puzzlescript.js.map
 /puzzlescript-webworker.js
@@ -18,6 +17,10 @@
 /pwa-app.js
 /pwa-app.js.map
 /pwa-service-worker.js
+/pwa-service-worker.js.map
+/workbox-*.js
+/workbox-*.js.map
+
 
 /game-thumbnails/*.png
 /game-thumbnails/*.svg

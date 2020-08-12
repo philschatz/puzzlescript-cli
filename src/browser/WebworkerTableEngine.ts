@@ -189,7 +189,7 @@ export default class WebworkerTableEngine implements Engineish {
                 console.log(`BUG: Unhandled Event occurred. Ignoring "${data.type}"`, data) // tslint:disable-line:no-console
         }
     }
-    private convertToA11yMessages(a11yMessages: Array<A11Y_MESSAGE<CellishJson, string>>): Array<A11Y_MESSAGE<Cellish, GameSprite>> {
+    private convertToA11yMessages(a11yMessages: A11Y_MESSAGE<CellishJson, string>[]): A11Y_MESSAGE<Cellish, GameSprite>[] {
         return a11yMessages.map((message) => {
             switch (message.type) {
                 case A11Y_MESSAGE_TYPE.ADD:

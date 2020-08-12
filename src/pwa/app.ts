@@ -1,4 +1,4 @@
-import 'babel-polyfill' // tslint:disable-line:no-implicit-dependencies
+import '@babel/polyfill' // tslint:disable-line:no-implicit-dependencies
 import { BUTTON_TYPE } from '../browser/controller/controller'
 import { Optional } from '../util'
 import { browseGames } from './browseGames'
